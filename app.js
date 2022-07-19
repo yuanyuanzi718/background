@@ -1,6 +1,7 @@
 import express from 'express'
 import cors from 'cors'
 import router from './router/user.js'
+import userinfoRouter from './router/userinfo.js'
 import db from './db/index.js'
 import { expressjwt } from "express-jwt"
 import jwtConfig from './config/jwt.js'
@@ -15,6 +16,7 @@ app.use(express.urlencoded({ extended: false })) // 配置解析表单数据的�
 app.use(expressjwt({ secret: jwtConfig.jwtSecretKey, algorithms: ["HS256"] }).unless({ path: [/^\/api\//] }))
 // 使用 router
 app.use('/api', router)
+app.use('/my', userinfoRouter)
 
 // 定义错误级别中间件
 app.use((err, req, res, next) => {
