@@ -47,11 +47,15 @@ export const updatePassword = (req, res) => {
 
 // updateAvatar
 export const updateAvatar = (req, res) => {
-  // const sql = `update ev_users set ? where id=?`
-  // db.query(sql, [req.body, req.body.id], (err, results) => {
-  //   err ? res.send({ status: 1, message: err.message }) : null
-  //   results.affectedRows !== 1 ? res.send({ status: 1, message: '获取用户信息失败' }) : null
-  //   // 获取成功
-  //   res.send({ status: 0, message: '更新用户信息成功' })
-  // })
+  // 1. 定义更新头像的 SQL 语句
+  const sql = `update ev_users set user_pic=? where id=?`
+  // 2. 调用 db.query() 执行 SQL 语句
+  db.query(sql, [req.body.avatar, req.auth.id], (err, results) => {
+    // 执行 SQL 语句失败
+    if (err) return res.send(err)
+    // 影响的行数是否等于 1
+    if (results.affectedRows !== 1) return res.send('更换头像失败！')
+    // 成功
+    res.send({ status: 0, message: '更新头像成功' })
+  })
 }
