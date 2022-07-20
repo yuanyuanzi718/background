@@ -2,8 +2,8 @@ import express from 'express'
 const router = express.Router()
 import { getUserInfo, updateUserInfo, updatePassword, updateAvatar } from '../router_handler/userinfo.js'
 // 导入需要验证规则对象
-import { expressJoi, update_userinfo_schema, update_password_schema, update_avatar_schema } from '../config/userinfoRule.js'
-
+import { update_userinfo_schema, update_password_schema, update_avatar_schema } from '../schema/userinfoRule.js'
+import { expressJoi } from '../schema/expressJoi.js'
 // 获取用户基本信息的路由
 router.get('/userinfo', getUserInfo)
 // 更新用户信息的路由

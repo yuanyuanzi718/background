@@ -1,7 +1,5 @@
 import db from '../db/index.js'
 import bcrypt from 'bcryptjs' // 密码加密包
-import jwt from 'jsonwebtoken'
-import jwtConfig from '../config/jwt.js'
 
 export const getUserInfo = (req, res) => {
   const sql = `select id, username,nickname,email,user_pic from ev_users where id=?`
