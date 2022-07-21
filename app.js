@@ -1,23 +1,25 @@
-import express from 'express'
-import cors from 'cors'
-import router from './router/user.js'
-import userinfoRouter from './router/userinfo.js'
-import artCateRouter from './router/artcate.js'
-import { expressjwt } from "express-jwt"
+import express from 'express'  // 框架
+import cors from 'cors' // 解决跨域问题
+import router from './router/user.js'  // 路由
+import userinfoRouter from './router/userinfo.js' // 路由
+import artCateRouter from './router/artcate.js' // 路由
+import { expressjwt } from "express-jwt" // 将 JWT 字符串解析还原成 JSON 对象
+import Joi from '@hapi/Joi' // 对客户端提交的数据进行规则验证
 import jwtConfig from './config/jwt.js'
-import Joi from '@hapi/Joi'
 
 const app = express()
-app.use(cors())  // 跨域
-app.use(express.urlencoded({ extended: false })) // 配置解析表单数据的中间件
+
+// 跨域
+app.use(cors())
+
+// 配置解析表单数据的中间件
+app.use(express.urlencoded({ extended: false }))
 
 // 注册 JWT 字符串解析
 app.use(expressjwt({ secret: jwtConfig.jwtSecretKey, algorithms: ["HS256"] }).unless({ path: [/^\/api\//] }))
 
 // 一定要在路由之前，封装 res.cc 函数
 app.use((req, res, next) => {
-  // status 默认值为 1，表示失败的情况
-  // err 的值，可能是一个错误对象，也可能是一个错误的描述字符串
   res.cc = function (err, status = 1) {
     res.send({
       status,

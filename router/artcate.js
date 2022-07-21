@@ -12,7 +12,7 @@ router.post('/addcates', expressJoi(add_cate_schema), addArticleCates)
 router.get('/deletecate/:id', expressJoi(delete_cate_schema), deleteCateById)
 // 根据 Id 获取
 router.get('/cates/:id', expressJoi(get_cate_schema), getArticleById)
-// 根据 Id 更新列表
+// 根据 Id 更新分类
 router.post('/updatecate', expressJoi(update_cate_schema), updateCateById)
 
 export default router

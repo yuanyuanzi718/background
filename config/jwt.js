@@ -1,4 +1,4 @@
 export default {
   jwtSecretKey: 'ShuaiBiHui',
-  expiresIn: '10h'
+  expiresIn: '24h'
 }
