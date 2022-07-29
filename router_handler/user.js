@@ -26,18 +26,34 @@ export const regUser = (req, res) => {
 // 登录
 export const login = (req, res) => {
   const userinfo = req.body
+  console.log(userinfo);
   const sql = `select * from ev_users where username=?`
   db.query(sql, userinfo.username, (err, results) => {
     err ? res.send(err) : null
-    results.length !== 1 ? res.send('登录失败') : null
+    if (results.length !== 1) return res.send({ data: { status: 400, message: '登录失败' } })
     const compareResult = bcrypt.compareSync(userinfo.password, results[0].password)
-    !compareResult ? res.send('登录失败') : null
+    if (!compareResult) return res.send({ status: 400, message: '登录失败' })
     const user = { ...results[0], password: '', user_pic: '' }
     const tokenStr = jwt.sign(user, jwtConfig.jwtSecretKey, { expiresIn: jwtConfig.expiresIn })
-    res.send({
-      status: 0,
-      message: "登陆成功",
-      token: `Bearer ${tokenStr}`,
-    })
+    if (userinfo.remember) {
+      res.send({
+        data: {
+          status: 200,
+          message: "登陆成功",
+          token: `Bearer ${tokenStr}`,
+          remember: true,
+        }
+      })
+    } else {
+      res.send({
+        data: {
+          status: 200,
+          message: "登陆成功",
+          token: `Bearer ${tokenStr}`,
+          remember: false,
+        }
+      })
+    }
   })
 }
+
